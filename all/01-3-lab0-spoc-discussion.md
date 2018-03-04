@@ -72,3 +72,44 @@ SETGATE(intr, 1,2,3,0);
     * `0x20003`
 
 
+=======
+### 课堂实践练习
+
+#### 练习一
+
+请在ucore中找一段你认为难度适当的AT&T格式X86汇编代码，尝试解释其含义。
+
+  - [Intel格式和AT&T格式汇编区别](http://www.cnblogs.com/hdk1993/p/4820353.html)
+
+  - ##### [x86汇编指令集  ](http://hiyyp1234.blog.163.com/blog/static/67786373200981811422948/)
+
+  - ##### [PC Assembly Language, Paul A. Carter, November 2003.](https://pdos.csail.mit.edu/6.828/2016/readings/pcasm-book.pdf)
+
+  - ##### [*Intel 80386 Programmer's Reference Manual*, 1987](https://pdos.csail.mit.edu/6.828/2016/readings/i386/toc.htm)
+
+  - ##### [[IA-32 Intel Architecture Software Developer's Manuals](http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html)]
+
+以下为 strcmp 的代码, 分析如下.
+
+```
+"1: lodsb;"          // Load byte DS:[ESI] to AL
+"scasb;"             // Compare %%AL with ES:[EDI]; increase EDI afterwards
+"jne 2f;"            // If they do not equal, goto 2
+"testb %%al, %%al;"  // Test: if %%AL != 0, goto 1 (string not ended)
+"jne 1b;"      
+"xorl %%eax, %%eax;" //       otherwise, set %%EAX to 0 and goto 3 (comparison finished, two strings equal)
+"jmp 3f;"
+"2: sbbl %%eax, %%eax;" // Set %%EAX to 1
+"orb $1, %%al;"
+"3:"                 // [Exit point]
+```
+
+#### 练习二
+
+宏定义和引用在内核代码中很常用。请枚举ucore中宏定义的用途，并举例描述其含义。
+
+ > 利用宏进行复杂数据结构中的数据访问；
+ > 利用宏进行数据类型转换；如 to_struct, 
+ > 常用功能的代码片段优化；如  ROUNDDOWN, SetPageDirty
+
+
